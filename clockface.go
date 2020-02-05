@@ -9,5 +9,5 @@ type Point struct {
 
 // SecondHand create a second hand poin
 func SecondHand(t time.Time) Point {
-	return Point{}
+	return Point{150, 60}
 }
