@@ -1,10 +1,10 @@
-package clocks
+package clockface_test
 
 import (
 	"testing"
 	"time"
 
-	"github.com/gypsydave5/learn-go-with-tests/math/v1/clockface"
+	"github.com/jhampac/clockface"
 )
 
 func TestSecondHandAtMidnight(t *testing.T) {
