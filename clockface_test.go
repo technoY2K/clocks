@@ -77,7 +77,7 @@ func testName(t time.Time) string {
 }
 
 func roughlyEqualFloat64(a, b float64) bool {
-	const equalityThreshold = 1e-7
+	equalityThreshold := 1e-7
 	return math.Abs(a-b) < equalityThreshold
 }
 
