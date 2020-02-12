@@ -25,19 +25,18 @@ func TestSVGWriterAtMidnight(t *testing.T) {
 	b := bytes.Buffer{}
 	SVGWriter(&b, tm)
 
-	svg := Svg{}
+	svg := SVG{}
 	xml.Unmarshal(b.Bytes(), &svg)
 
-	x2 := "150.000"
-	y2 := "60.000"
+	want := Line{150, 150, 150, 60}
 
 	for _, line := range svg.Line {
-		if line.X2 == x2 && line.Y2 == y2 {
+		if line == want {
 			return
 		}
 	}
 
-	t.Errorf("Expected to find the second hand with x2 of %+v and y2 of %+v, in the SVG output %v", x2, y2, b.String())
+	t.Errorf("Expected to find the second hand line %+v, in the SVG lines %+v", want, svg.Line)
 }
 
 func TestSecondsInRadians(t *testing.T) {
