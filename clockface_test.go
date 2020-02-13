@@ -8,17 +8,6 @@ import (
 	"time"
 )
 
-// func TestSecondHandAtMidnight(t *testing.T) {
-// 	tm := time.Date(1337, time.January, 1, 0, 0, 0, 0, time.UTC)
-
-// 	want := Point{X: 150, Y: 150 - 90}
-// 	got := SecondHand(tm)
-
-// 	if got != want {
-// 		t.Errorf("got %v, wanted %v", got, want)
-// 	}
-// }
-
 func TestSVGWriterAtMidnight(t *testing.T) {
 	tm := time.Date(1337, time.January, 1, 0, 0, 0, 0, time.UTC)
 
@@ -69,7 +58,7 @@ func TestSVGWriterSecondHand(t *testing.T) {
 	}
 }
 
-func TestSVGWriterMinuteHand(t *testing.T) {
+func TestSVGWriterMinutedHand(t *testing.T) {
 	cases := []struct {
 		time time.Time
 		line Line
@@ -135,7 +124,7 @@ func TestMinutesInRadians(t *testing.T) {
 	}
 }
 
-func TestMinuteHandPoint(t *testing.T) {
+func TestMinutedHandPoint(t *testing.T) {
 	cases := []struct {
 		time  time.Time
 		point Point
@@ -152,36 +141,6 @@ func TestMinuteHandPoint(t *testing.T) {
 		})
 	}
 }
-
-func TestSecondHandVector(t *testing.T) {
-	cases := []struct {
-		time  time.Time
-		point Point
-	}{
-		{simpleTime(0, 0, 30), Point{0, -1}},
-		{simpleTime(0, 0, 45), Point{-1, 0}},
-	}
-
-	for _, c := range cases {
-		t.Run(testName(c.time), func(t *testing.T) {
-			got := secondHandPoint(c.time)
-			if !roughlyEqualPoint(got, c.point) {
-				t.Fatalf("wanted %v Point, but got %v", c.point, got)
-			}
-		})
-	}
-}
-
-// func TestSecondHandAt30Seconds(t *testing.T) {
-// 	tm := time.Date(1337, time.January, 1, 0, 0, 0, 0, time.UTC)
-
-// 	want := Point{X: 150, Y: 150 - 90}
-// 	got := SecondHand(tm)
-
-// 	if got != want {
-// 		t.Errorf("got %v, wanted %v", got, want)
-// 	}
-// }
 
 func simpleTime(hours, mintues, seconds int) time.Time {
 	return time.Date(312, time.October, 28, hours, mintues, seconds, 0, time.UTC)
