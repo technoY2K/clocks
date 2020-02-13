@@ -79,7 +79,7 @@ func secondsInRadians(t time.Time) float64 {
 }
 
 func minutesInRadians(t time.Time) float64 {
-	return math.Pi
+	return (secondsInRadians(t) / 60) + (math.Pi / (30 / float64(t.Minute())))
 }
 
 func secondHandPoint(t time.Time) Point {
@@ -88,4 +88,8 @@ func secondHandPoint(t time.Time) Point {
 	y := math.Cos(angle)
 
 	return Point{x, y}
+}
+
+func minuteHandPoint(t time.Time) Point {
+	return Point{0, -1}
 }
