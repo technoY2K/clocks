@@ -15,6 +15,18 @@ const (
 	clockCenterY     = 150
 )
 
+const svgStart = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="100%"
+     height="100%"
+     viewBox="0 0 300 300"
+     version="2.0">`
+
+const bezel = `<circle cx="150" cy="150" r="100" style="fill:#fff;stroke:#000;stroke-width:5px;"/>`
+
+const svgEnd = `</svg>`
+
 // Point is a point or hand on the clockface
 type Point struct {
 	X, Y float64
@@ -72,26 +84,6 @@ func makeHand(p Point, length float64) Point {
 	return Point{p.X + clockCenterX, p.Y + clockCenterY}
 }
 
-const svgStart = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns="http://www.w3.org/2000/svg"
-     width="100%"
-     height="100%"
-     viewBox="0 0 300 300"
-     version="2.0">`
-
-const bezel = `<circle cx="150" cy="150" r="100" style="fill:#fff;stroke:#000;stroke-width:5px;"/>`
-
-const svgEnd = `</svg>`
-
-func secondsInRadians(t time.Time) float64 {
-	return (math.Pi / (30 / (float64(t.Second()))))
-}
-
-func minutesInRadians(t time.Time) float64 {
-	return (secondsInRadians(t) / 60) + (math.Pi / (30 / float64(t.Minute())))
-}
-
 func secondHandPoint(t time.Time) Point {
 	return angleToPoint(secondsInRadians(t))
 }
@@ -105,4 +97,12 @@ func angleToPoint(angle float64) Point {
 	y := math.Cos(angle)
 
 	return Point{x, y}
+}
+
+func secondsInRadians(t time.Time) float64 {
+	return (math.Pi / (30 / (float64(t.Second()))))
+}
+
+func minutesInRadians(t time.Time) float64 {
+	return (secondsInRadians(t) / 60) + (math.Pi / (30 / float64(t.Minute())))
 }
