@@ -167,12 +167,17 @@ func TestSVGWriterHourHand(t *testing.T) {
 }
 
 func TestHoursInRadians(t *testing.T) {
-	cases := []struct {
+	type TestCase struct {
 		time  time.Time
 		angle float64
-	}{
-		{simpleTime(6, 0, 0), math.Pi},
+	}
+
+	y := TestCase{simpleTime(6, 0, 0), math.Pi}
+
+	cases := []TestCase{
+		y,
 		{simpleTime(0, 0, 0), 0},
+		{simpleTime(21, 0, 0), math.Pi * 1.5},
 	}
 
 	for _, c := range cases {
