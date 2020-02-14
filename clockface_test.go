@@ -38,6 +38,46 @@ func TestSVGWriterSecondHand(t *testing.T) {
 	}
 }
 
+func TestSecondsInRadians(t *testing.T) {
+	cases := []struct {
+		time  time.Time
+		angle float64
+	}{
+		{simpleTime(0, 0, 30), math.Pi},
+		{simpleTime(0, 0, 0), 0},
+		{simpleTime(0, 0, 45), (math.Pi / 2) * 3},
+		{simpleTime(0, 0, 7), (math.Pi / 30) * 7},
+	}
+
+	for _, c := range cases {
+		t.Run(testName(c.time), func(t *testing.T) {
+			got := secondsInRadians(c.time)
+			if got != c.angle {
+				t.Fatalf("wanted %v radians, but got %v", c.angle, got)
+			}
+		})
+	}
+}
+
+func TestSecondHandPoint(t *testing.T) {
+	cases := []struct {
+		time  time.Time
+		point Point
+	}{
+		{simpleTime(0, 0, 30), Point{X: 0, Y: -1}},
+		{simpleTime(0, 0, 45), Point{X: -1, Y: 0}},
+	}
+
+	for _, c := range cases {
+		t.Run(testName(c.time), func(t *testing.T) {
+			got := secondHandPoint(c.time)
+			if !roughlyEqualPoint(got, c.point) {
+				t.Fatalf("Wanted %v Point, but got %v", c.point, got)
+			}
+		})
+	}
+}
+
 func TestSVGWriterMinutedHand(t *testing.T) {
 	cases := []struct {
 		time time.Time
@@ -64,6 +104,42 @@ func TestSVGWriterMinutedHand(t *testing.T) {
 	}
 }
 
+func TestMinutesInRadians(t *testing.T) {
+	cases := []struct {
+		time  time.Time
+		angle float64
+	}{
+		{simpleTime(0, 30, 0), math.Pi},
+		{simpleTime(0, 0, 7), 7 * (math.Pi / (30 * 60))},
+	}
+
+	for _, c := range cases {
+		t.Run(testName(c.time), func(t *testing.T) {
+			got := minutesInRadians(c.time)
+			if got != c.angle {
+				t.Fatalf("wanted %v radians, but got %v", c.angle, got)
+			}
+		})
+	}
+}
+
+func TestMinutedHandPoint(t *testing.T) {
+	cases := []struct {
+		time  time.Time
+		point Point
+	}{
+		{simpleTime(0, 30, 0), Point{0, -1}},
+	}
+
+	for _, c := range cases {
+		t.Run(testName(c.time), func(t *testing.T) {
+			got := minuteHandPoint(c.time)
+			if !roughlyEqualPoint(got, c.point) {
+				t.Fatalf("wanted %v Point, but got %v", c.point, got)
+			}
+		})
+	}
+}
 func TestSVGWriterHourHand(t *testing.T) {
 	cases := []struct {
 		time time.Time
@@ -90,52 +166,13 @@ func TestSVGWriterHourHand(t *testing.T) {
 	}
 }
 
-func TestSecondsInRadians(t *testing.T) {
-	cases := []struct {
-		time  time.Time
-		angle float64
-	}{
-		{simpleTime(0, 0, 30), math.Pi},
-		{simpleTime(0, 0, 0), 0},
-		{simpleTime(0, 0, 45), (math.Pi / 2) * 3},
-		{simpleTime(0, 0, 7), (math.Pi / 30) * 7},
-	}
-
-	for _, c := range cases {
-		t.Run(testName(c.time), func(t *testing.T) {
-			got := secondsInRadians(c.time)
-			if got != c.angle {
-				t.Fatalf("wanted %v radians, but got %v", c.angle, got)
-			}
-		})
-	}
-}
-
-func TestMinutesInRadians(t *testing.T) {
-	cases := []struct {
-		time  time.Time
-		angle float64
-	}{
-		{simpleTime(0, 30, 0), math.Pi},
-		{simpleTime(0, 0, 7), 7 * (math.Pi / (30 * 60))},
-	}
-
-	for _, c := range cases {
-		t.Run(testName(c.time), func(t *testing.T) {
-			got := minutesInRadians(c.time)
-			if got != c.angle {
-				t.Fatalf("wanted %v radians, but got %v", c.angle, got)
-			}
-		})
-	}
-}
-
 func TestHoursInRadians(t *testing.T) {
 	cases := []struct {
 		time  time.Time
 		angle float64
 	}{
 		{simpleTime(6, 0, 0), math.Pi},
+		{simpleTime(0, 0, 0), 0},
 	}
 
 	for _, c := range cases {
@@ -143,43 +180,6 @@ func TestHoursInRadians(t *testing.T) {
 			got := hoursInRadians(c.time)
 			if got != c.angle {
 				t.Fatalf("Wanted %v radians, but got %v", c.angle, got)
-			}
-		})
-	}
-}
-
-func TestSecondHandPoint(t *testing.T) {
-	cases := []struct {
-		time  time.Time
-		point Point
-	}{
-		{simpleTime(0, 0, 30), Point{X: 0, Y: -1}},
-		{simpleTime(0, 0, 45), Point{X: -1, Y: 0}},
-	}
-
-	for _, c := range cases {
-		t.Run(testName(c.time), func(t *testing.T) {
-			got := secondHandPoint(c.time)
-			if !roughlyEqualPoint(got, c.point) {
-				t.Fatalf("Wanted %v Point, but got %v", c.point, got)
-			}
-		})
-	}
-}
-
-func TestMinutedHandPoint(t *testing.T) {
-	cases := []struct {
-		time  time.Time
-		point Point
-	}{
-		{simpleTime(0, 30, 0), Point{0, -1}},
-	}
-
-	for _, c := range cases {
-		t.Run(testName(c.time), func(t *testing.T) {
-			got := minuteHandPoint(c.time)
-			if !roughlyEqualPoint(got, c.point) {
-				t.Fatalf("wanted %v Point, but got %v", c.point, got)
 			}
 		})
 	}
