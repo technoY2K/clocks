@@ -16,6 +16,15 @@ const (
 	clockCenterY     = 150
 )
 
+const (
+	secondsInHalfClock = 30
+	secondsInClock     = 2 * secondsInHalfClock
+	minutesInHalfClock = 30
+	minutesInClock     = 2 * minutesInHalfClock
+	hourInHalfClock    = 6
+	hoursInClock       = 2 * hourInHalfClock
+)
+
 const svgStart = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +89,7 @@ func secondHandPoint(t time.Time) Point {
 }
 
 func secondsInRadians(t time.Time) float64 {
-	return (math.Pi / (30 / (float64(t.Second()))))
+	return (math.Pi / (secondsInHalfClock / (float64(t.Second()))))
 }
 
 func minuteHand(w io.Writer, t time.Time) {
@@ -93,7 +102,7 @@ func minuteHandPoint(t time.Time) Point {
 }
 
 func minutesInRadians(t time.Time) float64 {
-	return (secondsInRadians(t) / 60) + (math.Pi / (30 / float64(t.Minute())))
+	return (secondsInRadians(t) / minutesInClock) + (math.Pi / (minutesInHalfClock / float64(t.Minute())))
 }
 
 func hourHand(w io.Writer, t time.Time) {
@@ -106,7 +115,7 @@ func hourHandPoint(t time.Time) Point {
 }
 
 func hoursInRadians(t time.Time) float64 {
-	return ((minutesInRadians(t) / 12) + (math.Pi / (6 / float64(t.Hour()%12))))
+	return ((minutesInRadians(t) / hoursInClock) + (math.Pi / (hourInHalfClock / float64(t.Hour()%12))))
 }
 
 func makeHand(p Point, length float64) Point {
