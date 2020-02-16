@@ -28,7 +28,7 @@ const bezel = `<circle cx="150" cy="150" r="100" style="fill:#fff;stroke:#000;st
 
 const svgEnd = `</svg>`
 
-// SVGWriter outputs an SVG with given arguments
+// Write outputs an SVG with given arguments
 func Write(w io.Writer, t time.Time) {
 	io.WriteString(w, svgStart)
 	io.WriteString(w, bezel)
@@ -54,7 +54,7 @@ func hourHand(w io.Writer, t time.Time) {
 }
 
 func makeHand(p ts.Point, length float64) ts.Point {
-	p = ts.Point{p.X * length, p.Y * length}
-	p = ts.Point{p.X, -p.Y}
-	return ts.Point{p.X + clockCenterX, p.Y + clockCenterY}
+	p = ts.Point{X: p.X * length, Y: p.Y * length}
+	p = ts.Point{X: p.X, Y: -p.Y}
+	return ts.Point{X: p.X + clockCenterX, Y: p.Y + clockCenterY}
 }
